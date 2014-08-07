@@ -1,0 +1,46 @@
+* Basics
+  Include
+  ~<script type="text/javascript"> src="angular.min.js"> </script>~
+  ~<script type="text/javascript" src="app.js"></script>~
+  app.js contains application code (modules)
+  in <html> tag, add ng-app="[application name]" . ng-app is a directive
+
+  _Modules_
+  ~var app=angular.module('store',[]);~
+  'store' is the name of application
+  [] is list of dependencies for this module
+  
+* Directives
+  ng-controller="...."
+  ng-show="[boolean property]"
+  ng-hide="...."
+  ng-repeat="product in store.products" // now use product variable and the div will be repeated
+
+* filters
+  {{ data | filter:options }}
+  {{ product.price | currency }}
+  {{ '1288123412323' | date:'MM/dd/yyyy @ h:mma' }} // 12/27/2013 @ 12:50 QM
+  {{ .. | uppercase/lowercase }}
+  < li ng-repeat="product in store.products | limitTo:3" >
+  <li ng-repeat="product in store.products | orderBy:'-price' >
+
+* Images
+  <img ng-src="{{product.images[0].full}}" />
+
+* Tabs
+  Bootstrap tabs:
+  <ul class="nav nav-pills"> <li> tab1 </li> ... </ul>
+  
+  Angular
+  <li ng-click="tab = 1" > {{ contents[tab] }} </li>
+    OR
+  <div ng-show="tab===1" > stuff </div>
+
+  For initial data
+  <section ng-init="tab=1" > .... </section>
+
+* CSS  
+  ng-class directive
+  ng-class="{active:tab === 3}" //
+  
+  

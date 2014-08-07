@@ -1,0 +1,11 @@
+- /cgi/getTables.py
+  json list with names of tables
+- getTableOperations.py?tablename=tablename
+  list: {'table':[operation1,...], 'table2':[...],...}
+- executeOperation.py?tablename1=tablename1&operation=operation1&tablename2=tablename2
+  {'columns':[col1, col2, ...],
+   'data':[
+      {'col1':val1, 'col2':'val2',...
+      }
+      {}
+]}
