@@ -43,45 +43,64 @@
         </div><!--/.nav-collapse -->
       </div>
      </div>
-</div>
+
      <!-- end navbar -->
      <div style=" padding-left: 5px;">
        
        <button ng-show="qbo.screen_no!=1" class="btn btn-primary" ng-click="qbo.goBack()"> &lt;-Back </button>
        <h3 ng-show="qbo.screen_no===1"> Select first table </h3>
-       <h3 ng-show="qbo.screen_no===2 || qbo.screen==3"> Select Operation </h3>
        <h4 ng-show="qbo.screen_no===4">Showing data</h4>
        <div class="row" style="padding-top: 10px">
-	 <div ng-show="qbo.screen_no>1">
+	 <div ng-show="qbo.screen_no===2">
 	   <div class="col-md-3">
-	     <a href=""  ng-click="qbo.selectTable(1)">
-               <div class="panel panel-default">
+             <div class="panel panel-default">
+	       <div class="panel-heading">
+		 <h3 class="panel-title">{{qbo.first_selected_table_name}}</h3>
+	       </div>
+	       <div class="panel-body">
+		 Panel content
+	       </div>
+             </div>
+	   </div>
+	 </div>
+	 <div ng-repeat="table in qbo.all_tables" ng-show="qbo.screen_no===1">
+	   <div class="col-md-3">
+	     <a href="" ng-click="qbo.selectFirstTable(table)">
+               <div class="panel panel-primary" ng-click="handleClick(2)">
 		 <div class="panel-heading">
-		   <h3 class="panel-title">Panel title</h3>
+		   <h3 class="panel-title">{{table.name}}</h3>
 		 </div>
 		 <div class="panel-body">
-		   Panel content
+		   <!-- <ul> -->
+		   <!--   <li> <u>Operation 1</u> </li> -->
+		   <!--   <li> <u>Operation 2</u> </li> -->
+		   <!-- </ul> -->
+		   {{table.descr}}
 		 </div>
                </div>
 	     </a>
 	   </div>
-	 </div>
-	 <div ng-repeat="table in qbo.tables">
+	 </div><!-- /ng-repeat for first screen tables-->
+       </div><!-- /row -->
+       <hr ng-show="qbo.screen_no===2" /> 
+
+       <h3 ng-show="qbo.screen_no===2 || qbo.screen==3"> Select Operation </h3>
+       <div class="row">
+	 
+	 <div ng-repeat="table in qbo.second_table_options" ng-show="qbo.screen_no===2">
 	   <div class="col-md-3">
-	     <a href=""  ng-click="qbo.selectTable(2)">
+	     <a href="" ng-click="qbo.selectSecondTable(table)">
                <div class="panel panel-primary" ng-click="handleClick(2)">
 		 <div class="panel-heading">
-		   <h3 class="panel-title">Panel title</h3>
+		   <h3 class="panel-title">{{table.name}}</h3>
 		 </div>
 		 <div class="panel-body">
 		   <ul>
-		     <li> <u>Operation 1</u> </li>
-		     <li> <u>Operation 2</u> </li>
-		   </ul>
+		     <li ng-repeat="operation in table.ops"> <u>{{operation}}</u> </li>		   </ul>
+		   {{table.descr}}
 		 </div>
                </div>
 	     </a>
-	   </div>
 	 </div>
        </div>
      </div>

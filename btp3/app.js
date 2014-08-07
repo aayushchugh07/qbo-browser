@@ -2,15 +2,25 @@ var app=angular.module('qbo',[]);
 
 app.controller('qbo_controller_1',function(){
     this.screen_no=1;
-    this.tables=all_tables;
-    this.first_selected_table=''
-    this.selectTable=function(table_name){
-	this.screen_no%=2;
+    this.all_tables=all_tables;
+    this.first_selected_table_name=null;
+    this.first_selected_table=null;
+    this.selectFirstTable=function(table_in){
+	this.first_selected_table=table_in;
+	this.first_selected_table_name=table_in.name;
+	// $http({method: 'GET', url: '/someUrl'}).
+	//     success(function(data, status, headers, config) {
+	// 	// this callback will be called asynchronously
+	// 	// when the response is available
+	//     }).
+	//     error(function(data, status, headers, config) {
+	// 	// called asynchronously if an error occurs
+	// 	// or server returns response with an error status.
+	//     });
+	
+	// so instead of above call, i will copy the hard coded data for now
+	this.second_table_options=op_tables;
 	this.screen_no+=1;
-	if(this.screen_no==1){
-	    this.first_selected_table=table_name;
-	    
-	}
     };
     this.goBack=function(){
 	this.screen_no-=1;
@@ -34,14 +44,19 @@ var gems=[{
 
 var all_tables=[{
     name: 'Table1',
+    descr:'The one and only table',
 },{
     name: 'Table2',
+    descr:'The one and only table',
 },{
     name: 'Table3',
+    descr:'The one and only table',
 },{
     name: 'Table4',
+    descr:'The one and only table',
 },{
     name: 'Table5',
+    descr:'The one and only table',
 }];
 
 var op_tables=[{
