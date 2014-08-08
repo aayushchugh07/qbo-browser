@@ -1,29 +1,41 @@
 var app=angular.module('qbo',[]);
 
-app.controller('qbo_controller_1',function(){
+app.controller('qbo_controller_1',function($scope,$http){
+    top_scope=this;
     this.screen_no=1;
-    this.all_tables=all_tables;
+    this.all_tables=null;
     this.first_selected_table_name=null;
     this.first_selected_table=null;
+    this.second_selected_table=null;
+    tables_url='http://10.2.56.136:8000/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
+    this.the_data='initial';
+    $http({method: 'GET', url: tables_url}).
+	success(function(data, status, headers, config) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    top_scope.all_tables=data;
+	    
+	}).
+	error(function(data, status, headers, config) {
+	    top_scope.the_data='failed';
+	});
     this.selectFirstTable=function(table_in){
 	this.first_selected_table=table_in;
 	this.first_selected_table_name=table_in.name;
-	// $http({method: 'GET', url: '/someUrl'}).
-	//     success(function(data, status, headers, config) {
-	// 	// this callback will be called asynchronously
-	// 	// when the response is available
-	//     }).
-	//     error(function(data, status, headers, config) {
-	// 	// called asynchronously if an error occurs
-	// 	// or server returns response with an error status.
-	//     });
 	
 	// so instead of above call, i will copy the hard coded data for now
 	this.second_table_options=op_tables;
-	this.screen_no+=1;
+	this.screen_no+=1;// proceed to next screen
     };
     this.goBack=function(){
 	this.screen_no-=1;
+    }
+    this.selectSecondTable=function(table){
+	this.second_selected_table=table;
+	this.second_selected_table_name=table.name;
+
+
+	this.screen_no=3; //proceed to two-table operation selection screen
     }
 });
 
