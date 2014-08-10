@@ -4,10 +4,14 @@ app.controller('qbo_controller_1',function($scope,$http){
     top_scope=this;
     this.screen_no=1;
     this.all_tables=null;
+    this.op_tables=null;
+    this.test_variable = null;
     this.first_selected_table_name=null;
     this.first_selected_table=null;
     this.second_selected_table=null;
-    tables_url='http://10.2.56.136:8000/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
+    this.operations_list = 'old1';
+    //tables_url='file:///home/lakshitarora/Desktop/qbo-browser/qbo-browser/btp3/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
+    tables_url='http://localhost:8000/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
     this.the_data='initial';
     $http({method: 'GET', url: tables_url}).
 	success(function(data, status, headers, config) {
@@ -19,12 +23,26 @@ app.controller('qbo_controller_1',function($scope,$http){
 	error(function(data, status, headers, config) {
 	    top_scope.the_data='failed';
 	});
+
+    second_table_url = "http://localhost:8000/getTableOperations.html";
+	$http({method: 'GET', url: second_table_url}).
+	success(function(data, status, headers, config) {
+	    // this callback will be called asynchronously
+	    // when the response is available
+	    top_scope.op_tables=data;
+	}).
+	error(function(data, status, headers, config) {
+	    top_scope.the_data='failed';
+	});
+
     this.selectFirstTable=function(table_in){
 	this.first_selected_table=table_in;
 	this.first_selected_table_name=table_in.name;
 	
 	// so instead of above call, i will copy the hard coded data for now
-	this.second_table_options=op_tables;
+	
+        
+	top_scope.second_table_options=top_scope.op_tables[table_in.name];
 	this.screen_no+=1;// proceed to next screen
     };
     this.goBack=function(){
@@ -33,7 +51,10 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.selectSecondTable=function(table){
 	this.second_selected_table=table;
 	this.second_selected_table_name=table.name;
-
+	for(i =0 ; i< top_scope.op_tables[table.name].length;i++){
+		if(top_scope.op_tables[table.name][i].name === table.name)
+			top_scope.operations_list= top_scope.op_tables[table.name][i].ops;
+	}
 
 	this.screen_no=3; //proceed to two-table operation selection screen
     }
