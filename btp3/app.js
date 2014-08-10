@@ -42,11 +42,11 @@ app.controller('qbo_controller_1',function($scope,$http){
 
     this.selectFirstTable=function(table_in){
 	this.first_selected_table=table_in;
-	this.first_selected_table_name=table_in.name;
+	this.first_selected_table_name=table_in.tablename;
 	// so instead of above call, i will copy the hard coded data for now
 	top_scope.showGranularity=0;
         
-	top_scope.second_table_options=top_scope.op_tables[table_in.name];
+	top_scope.second_table_options=top_scope.op_tables[table_in.tablename];
 	this.screen_no+=1;// proceed to next screen
     };
     this.goBack=function(){
@@ -55,9 +55,12 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.selectSecondTable=function(table){
 	top_scope.showGranularity=0;
 	this.second_selected_table=table;
+	//TODO: need to change below from table.name to table.tablename
 	this.second_selected_table_name=table.name;
 	var first_table=top_scope.first_selected_table_name;
+	this.todoText = top_scope.op_tables[first_table];
 	for(i =0 ; i< top_scope.op_tables[first_table].length;i++){
+		//TODO: need to change below from table.name to table.tablename
 		if(top_scope.op_tables[first_table][i].name === table.name)
 			top_scope.operations_list= top_scope.op_tables[first_table][i].ops;
 	}
