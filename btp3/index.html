@@ -44,31 +44,64 @@
              <div class="panel panel-default">
 	       <div class="panel-heading">
                    <span class="panel-title">{{qbo.first_selected_table_name}}</span>
-                 <button class="btn btn-default" ng-click="viewData(qbo.first_selected_table_name)" style="float: right;">View Data</button>
+                 
 	       </div>
 	       <div class="panel-body">
-                   <h5> Select Granularity </h5>
-                   <form ng-submit="selectGranularity()">
+			<button class="btn btn-default" ng-click="viewData(qbo.first_selected_table_name,1)" >View Data</button>
+		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.first_selected_table_name,1)" ng-show="qbo.showGranularity!==1"> Show Details</button>
+		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.first_selected_table_name,1)" ng-show="qbo.showGranularity===1"> Hide Details</button>                  
+	       </div>
+                   <form ng-submit="granularityFormVisibility()" ng-show="qbo.showGranularity===1">
                        <div class="col" >
-                       col1: <input ng-model="col1val" type="text" /> <br />
-                       
-                       col2: <input ng-model="col2val" type="text" /> <br />
+				{{qbo.test_variable}}
+		       		<div  ng-repeat="cols in qbo.granularityForm">
+					<div class="row">
+						<div class="col-lg-10">
+							<div class="input-group">
+								<span class="input-group-addon">
+									<input type="radio" name={{cols.name}}>
+								</span>
+								<input class="form-control" type="text" name={{cols.name}}  placeholder={{cols.name}}>
+							</div>
+						</div>
+					</div>
+				</div>
                        <input class="btn btn-default" type="submit" value="Change">
                        </div>
                    </form>
-	       </div>
              </div>
 	   </div>
 	 </div>
          <div ng-show="qbo.screen_no===3">
 	   <div class="col-md-3">
-             <div class="panel panel-default">
+	     <div class="panel panel-default">
 	       <div class="panel-heading">
-		 <h3 class="panel-title">{{qbo.second_selected_table_name}}</h3>
+                   <span class="panel-title">{{qbo.second_selected_table_name}}</span>
+                 
 	       </div>
 	       <div class="panel-body">
-		 Panel content
+			<button class="btn btn-default" ng-click="viewData(qbo.second_selected_table_name,2)" >View Data</button>
+		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.second_selected_table_name,2)" ng-show="qbo.showGranularity!==2"> Show Details</button>
+		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.second_selected_table_name,2)" ng-show="qbo.showGranularity===2"> Hide Details</button>                  
 	       </div>
+                   <form ng-submit="granularityFormVisibility()" ng-show="qbo.showGranularity===2">
+                       <div class="col" >
+				{{qbo.test_variable}}
+		       		<div  ng-repeat="cols in qbo.granularityForm">
+					<div class="row">
+						<div class="col-lg-10">
+							<div class="input-group">
+								<span class="input-group-addon">
+									<input type="radio" name={{cols.name}}>
+								</span>
+								<input class="form-control" type="text" name={{cols.name}}  placeholder={{cols.name}}>
+							</div>
+						</div>
+					</div>
+				</div>
+                       <input class="btn btn-default" type="submit" value="Change">
+                       </div>
+                   </form>
              </div>
 	   </div>
 	 </div>
@@ -131,9 +164,9 @@
        </div>
      </div>
    </div>
-     <p>{{qbo.table_cols}}</p>
+    <!-- <p>{{qbo.table_cols}}</p>
      <p>{{qbo.todoText}}</p>
-     <p>{{qbo.the_data}} {{qbo.operations_list}}</p>
+     <p>{{qbo.the_data}} {{qbo.operations_list}}</p>-->
 
    <script type="text/javascript" src="res/angular.min.js"> </script>
    <script type="text/javascript" src="app.js"></script>

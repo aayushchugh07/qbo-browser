@@ -10,6 +10,9 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.first_selected_table=null;
     this.second_selected_table=null;
     this.operations_list = 'old1';
+    this.showGranularity = 0;
+    this.granularityForm = 'old';
+    this.tableDetails=tableDetails;
     //tables_url='file:///home/lakshitarora/Desktop/qbo-browser/qbo-browser/btp3/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
     tables_url='http://localhost:8000/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
     this.the_data='initial';
@@ -42,7 +45,7 @@ app.controller('qbo_controller_1',function($scope,$http){
 	this.first_selected_table_name=table_in.name;
 	
 	// so instead of above call, i will copy the hard coded data for now
-	
+	top_scope.showGranularity=0;
         
 	top_scope.second_table_options=top_scope.op_tables[table_in.name];
 	this.screen_no+=1;// proceed to next screen
@@ -51,13 +54,19 @@ app.controller('qbo_controller_1',function($scope,$http){
 	this.screen_no-=1;
     }
     this.selectSecondTable=function(table){
+	top_scope.showGranularity=0;
 	this.second_selected_table=table;
 	this.second_selected_table_name=table.name;
-	for(i =0 ; i< top_scope.op_tables[table.name].length;i++){
-		if(top_scope.op_tables[table.name][i].name === table.name)
-			top_scope.operations_list= top_scope.op_tables[table.name][i].ops;
+	for(i=0;i< top_scope.op_tables[top_scope.first_selected_table.name].length;i++){
+		if(top_scope.op_tables[top_scope.first_selected_table.name][i].name === table.name)
+			top_scope.operations_list= top_scope.op_tables[top_scope.first_selected_table.name][i].ops;
 	}
 	this.screen_no=3; //proceed to two-table operation selection screen
+    }
+    this.granularityFormVisibility = function(table,table_number){
+	top_scope.showGranularity=top_scope.showGranularity==table_number ? 0 : table_number;
+	top_scope.granularityForm = top_scope.tableDetails[table];
+	//top_scope.test_variable = top_scope.tableDetails[table];
     }
     $scope.selectGranularity=function(){
 	top_scope.todoText='';    
@@ -89,3 +98,29 @@ var op_tables=[{
     ops: ['1_5_op1','1_5_op2']
 }];
 
+var tableDetails = {
+	'Book_Copy' : [{name:'Book_ID', bool:0, toShow:1, defaultVal:"",},
+		     {name:'ISBN', bool:0, toShow:1, defaultVal:"",},
+		     {name:'isReference', bool:1, isSelected:1, defaultVal:"False",}],
+	'Book_Type' : [{name:'ISBN', bool:0, toShow:1, defaultVal:"",},
+		     {name:'BookAuthor', bool:0, toShow:1, defaultVal:"",},
+		     {name:'BookEdition', bool:0, toShow:1, defaultVal:"",},
+		     {name:'BookName', bool:0, isSelected:1, defaultVal:"",}],
+	'Customer' :  [{name:'Customer_ID', bool:0, toShow:1, defaultVal:"",},
+		     {name:'name', bool:0, toShow:1, defaultVal:"",},
+		     {name:'email', bool:0, toShow:1, defaultVal:"",},
+		     {name:'roll_no', bool:0, isSelected:1, defaultVal:"",}],
+	'Issue'    :  [{name:'Issue_ID', bool:0, toShow:1, defaultVal:"",},
+		     {name:'Book_ID', bool:0, toShow:1, defaultVal:"",},
+		     {name:'Issue_date', bool:0, toShow:1, defaultVal:"",},
+		     {name:'expiry_date', bool:0, toShow:1, defaultVal:"",},
+		     {name:'Staff_ID', bool:0, toShow:1, defaultVal:"",},
+		     {name:'Customer_ID', bool:0, isSelected:1, defaultVal:"",}],
+	'Returns'  : [{name:'Book_ID', bool:0, toShow:1, defaultVal:"",},
+		     {name:'Issue_ID', bool:0, toShow:1, defaultVal:"",},
+		     {name:'Returns_Date', bool:0, toShow:1, defaultVal:"",},
+		     {name:'Staff_ID', bool:0, isSelected:1, defaultVal:"",}],
+	'Staff'    : [{name:'Staff_ID', bool:0, toShow:1, defaultVal:"",},
+		     {name:'name', bool:0, toShow:1, defaultVal:"",},
+		     {name:'email', bool:0, toShow:1, defaultVal:"",},
+		     {name:'phone_number', bool:0, isSelected:1, defaultVal:"",}]};
