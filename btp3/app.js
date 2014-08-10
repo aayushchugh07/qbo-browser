@@ -14,7 +14,7 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.granularityForm = 'old';
     this.tableDetails=tableDetails;
     //tables_url='file:///home/lakshitarora/Desktop/qbo-browser/qbo-browser/btp3/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
-    tables_url='http://localhost:8000/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
+    tables_url='/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
     this.the_data='initial';
     this.table_cols=[{'abcd':'efgh'}];//table_cols_global;
     this.todoText='initial todotext';
@@ -29,7 +29,7 @@ app.controller('qbo_controller_1',function($scope,$http){
 	    alert('Backend connection failed');
 	});
 
-    second_table_url = "http://localhost:8000/getTableOperations.html";
+    second_table_url = "/getTableOperations.html";
 	$http({method: 'GET', url: second_table_url}).
 	success(function(data, status, headers, config) {
 	    // this callback will be called asynchronously
@@ -43,7 +43,6 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.selectFirstTable=function(table_in){
 	this.first_selected_table=table_in;
 	this.first_selected_table_name=table_in.name;
-	
 	// so instead of above call, i will copy the hard coded data for now
 	top_scope.showGranularity=0;
         
@@ -57,9 +56,10 @@ app.controller('qbo_controller_1',function($scope,$http){
 	top_scope.showGranularity=0;
 	this.second_selected_table=table;
 	this.second_selected_table_name=table.name;
-	for(i=0;i< top_scope.op_tables[top_scope.first_selected_table.name].length;i++){
-		if(top_scope.op_tables[top_scope.first_selected_table.name][i].name === table.name)
-			top_scope.operations_list= top_scope.op_tables[top_scope.first_selected_table.name][i].ops;
+	var first_table=top_scope.first_selected_table_name;
+	for(i =0 ; i< top_scope.op_tables[first_table].length;i++){
+		if(top_scope.op_tables[first_table][i].name === table.name)
+			top_scope.operations_list= top_scope.op_tables[first_table][i].ops;
 	}
 	this.screen_no=3; //proceed to two-table operation selection screen
     }
