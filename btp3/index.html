@@ -27,18 +27,6 @@
             <li class="active"><a href="/cgi/test5.py">Home</a></li>
             <li><a href="#about">Data Viewer</a></li>
             <li><a href="#contact">Feedback</a></li>
-            <!-- li class="dropdown">
-		 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-		 <ul class="dropdown-menu">
-                   <li><a href="#">Action</a></li>
-                   <li><a href="#">Another action</a></li>
-                   <li><a href="#">Something else here</a></li>
-                   <li class="divider"></li>
-                   <li class="dropdown-header">Nav header</li>
-                   <li><a href="#">Separated link</a></li>
-                   <li><a href="#">One more separated link</a></li>
-		 </ul>
-            </li -->
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -55,10 +43,19 @@
 	   <div class="col-md-3">
              <div class="panel panel-default">
 	       <div class="panel-heading">
-		 <h3 class="panel-title">{{qbo.first_selected_table_name}}</h3>
+                   <span class="panel-title">{{qbo.first_selected_table_name}}</span>
+                 <button class="btn btn-default" ng-click="viewData(qbo.first_selected_table_name)" style="float: right;">View Data</button>
 	       </div>
 	       <div class="panel-body">
-		 Panel content
+                   <h5> Select Granularity </h5>
+                   <form ng-submit="selectGranularity()">
+                       <div class="col" >
+                       col1: <input ng-model="col1val" type="text" /> <br />
+                       
+                       col2: <input ng-model="col2val" type="text" /> <br />
+                       <input class="btn btn-default" type="submit" value="Change">
+                       </div>
+                   </form>
 	       </div>
              </div>
 	   </div>
@@ -117,7 +114,8 @@
        </div>
      </div>
    </div>
-     <p>{{qbo.the_data}}</p>
+     <p>{{qbo.table_cols}}</p>
+     <p>{{qbo.todoText}}</p>
    <script type="text/javascript" src="res/angular.min.js"> </script>
    <script type="text/javascript" src="app.js"></script>
  </body>

@@ -7,17 +7,19 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.first_selected_table_name=null;
     this.first_selected_table=null;
     this.second_selected_table=null;
-    tables_url='http://10.2.56.136:8000/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
+    tables_url='file:///home/asgardian/btp/btp3/getTables.html';
     this.the_data='initial';
+    this.table_cols=[{'abcd':'efgh'}];//table_cols_global;
+    this.todoText='initial todotext';
     $http({method: 'GET', url: tables_url}).
 	success(function(data, status, headers, config) {
-	    // this callback will be called asynchronously
+	    // this callback will be called asynch ronously
 	    // when the response is available
 	    top_scope.all_tables=data;
 	    
 	}).
 	error(function(data, status, headers, config) {
-	    top_scope.the_data='failed';
+	    alert('Backend connection failed');
 	});
     this.selectFirstTable=function(table_in){
 	this.first_selected_table=table_in;
@@ -33,28 +35,14 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.selectSecondTable=function(table){
 	this.second_selected_table=table;
 	this.second_selected_table_name=table.name;
-
-
 	this.screen_no=3; //proceed to two-table operation selection screen
+    }
+    $scope.selectGranularity=function(){
+	top_scope.todoText='';    
     }
 });
 
-/* 
-// this is from the demo code, it is useless  
-var gems=[{
-    name: 'Dodecahedron',
-    price: 2.95,
-    description: 'The one and only gem',
-    canPurchase: false,
-},{
-    name: 'Dodecahedron',
-    price: 2.95,
-    description: 'The one and only gem',
-    canPurchase: true,
-}];
-*/
-
-var all_tables=[{
+var all_tables_trial=[{
     name: 'Table1',
     descr:'The one and only table',
 },{
@@ -78,3 +66,4 @@ var op_tables=[{
     name:'Table 5',
     ops: ['1_5_op1','1_5_op2']
 }];
+
