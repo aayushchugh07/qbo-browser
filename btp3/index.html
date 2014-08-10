@@ -93,7 +93,7 @@
        </div><!-- /row -->
        <hr ng-show="qbo.screen_no===2 || qbo.screen_no===3" /> 
 
-       <h3 ng-show="qbo.screen_no===2 || qbo.screen===3"> Select Operation </h3>
+       <h3 ng-show="qbo.screen_no===2 || qbo.screen===3"> Select table 2 </h3>
        <div class="row">
 	 
 	 <div ng-repeat="table in qbo.second_table_options" ng-show="qbo.screen_no===2">
@@ -111,11 +111,30 @@
                </div>
 	     </a>
 	 </div>
+	 
+	 </div>
+	 <div ng-repeat="operation in qbo.operations_list" ng-show="qbo.screen_no===3">
+	   <div class="col-md-3">
+	     <a href="" ng-click="qbo.selectSecondTable(table)">
+               <div class="panel panel-primary" ng-click="handleClick(2)">
+		 <div class="panel-heading">
+		   <h3 class="panel-title">{{operation}}</h3>
+		 </div>
+		<!-- <div class="panel-body">
+		   <ul>
+		     <li ng-repeat="operation in table.ops"> <u>{{operation}}</u> </li>		   </ul>
+		   {{table.descr}}
+		 </div>-->
+               </div>
+	     </a>
+	 </div>
        </div>
      </div>
    </div>
      <p>{{qbo.table_cols}}</p>
      <p>{{qbo.todoText}}</p>
+     <p>{{qbo.the_data}} {{qbo.operations_list}}</p>
+
    <script type="text/javascript" src="res/angular.min.js"> </script>
    <script type="text/javascript" src="app.js"></script>
  </body>
