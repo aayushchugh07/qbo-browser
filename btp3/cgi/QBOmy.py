@@ -39,8 +39,7 @@ class QBO:
 			self.dbh = MySQLdb.connect(host=self._databaseInfo['host'],user=self._databaseInfo['user'],passwd=self._databaseInfo['passwd'],db=self._databaseInfo['db'])
 			self.resultData=None
 			self.getDescription();
-		#	print self.TableDescription;
-		       	self.outputResult();
+
 		except MySQLdb.Error,e:
 			print "Error %d: %s" %(e.args[0],e.args[1])
 			sys.exit(1);
@@ -88,19 +87,14 @@ class QBO:
 				sys.stderr.write(row['Type'])
 				self.TableDescription[o].append([row['Field'],row['Key'],str(row['Type'])])
 	def runQueries(self, st):
-		try:
 			dataCursor = self.dbh.cursor( cursorclass=MySQLdb.cursors.DictCursor )
 			dataCursor.execute(st)
 			self.resultData = dataCursor.fetchall()
 			return True
-		except MySQLdb.Error,e:
-			return "Error %d : %s"%(e.args[0],e.args[1])
-	def outputResult(self):
-		outputList = []
+
 	def viewData(self,x):
 		for obj in self.BagDict2:
 			if(obj["name"]==x):
-				sys.stderr.write("$$$"+obj["sql"]+"$$$")
 				x=self.runQueries(obj["sql"]+" as "+x)
 				if(x!=True):
 					sys.stderr.write(x)
@@ -111,13 +105,12 @@ class QBO:
 			if(bag["name"] == x):
 				return bag["description"]
 	def getColumns(self):
-		r = self.resultData[0]
+                r = self.resultData[0]
 #	Inserts default object(tables) into bag
 #	objname -> objname_in_bag 
 	def insertObjectInBag(self, objname,newobjname):
 		sys.stderr.write(objname)
 		if objname in self.ObjectsList:
-#	sys.stderr.write(objname=='Book_Copy')
 			if objname == 'Book_Type':
 				self.BagDict2.append({"name":newobjname,"selected":False,"sql":"select * from Book_Type","description":self.TableDescription[objname]})
 			if objname == 'Book_Copy':
@@ -134,6 +127,7 @@ class QBO:
 			return newobjname
 		else:
 			return None
+
 	def intersectDescription(self,t1,t2):
 		commonDescription = []
 		for i in t1:
@@ -141,6 +135,7 @@ class QBO:
 				if(i[0]==j[0]):
 					commonDescription.append([i[0],i[1],j[1]])
 		return commonDescription
+
 	def getPriMul(self,schema):
 		l = []
 		for i in schema:
@@ -149,12 +144,14 @@ class QBO:
 				l.append(i[0])
 				sys.stdout.write(i[0])
 		return l
+
 	def getSame(commonDescription):
 		l = []
 		for i in CommonDescription:
 			if(i[1]==i[2]):
 				l.append((i[0],i[1]))
 		return l
+
 	def operate(self,result):
 		obj1 = None
 		obj2 = None
@@ -172,8 +169,7 @@ class QBO:
 			obj2schema = obj2["description"]
 			commonDescription = self.intersectDescription(obj1schema,obj2schema)
 			subtractColumn = self.getPriMul(commonDescription)
-		#	print subtractColumn
-		#	sys.stderr.write(subtractColumn)
+
 			if(len(subtractColumn)!=1):
 				return False
        			st=' select * from ( ' +obj1['sql']+ ' as ' + obj1['name'] + ' where ' + obj1['name']+'.'+subtractColumn[0] + ' not in ( select '+subtractColumn[0]+' from ( '+obj2['sql']+' ) as ' +obj2['name'] + '))'
@@ -189,8 +185,7 @@ class QBO:
 			obj2schema = obj2["description"]
 			commonDescription = self.intersectDescription(obj1schema,obj2schema)
 			subtractColumn = self.getPriMul(commonDescription)
-		#	print subtractColumn
-		#	sys.stderr.write(subtractColumn)
+
 			if(len(subtractColumn)!=1):
 				return False
        			st=' select * from ( ' +obj1['sql']+ ' as ' + obj1['name'] + ' where ' + obj1['name']+'.'+subtractColumn[0] + ' in ( select '+subtractColumn[0]+' from ( '+obj2['sql']+' ) as ' +obj2['name'] + '))'
@@ -201,64 +196,3 @@ class QBO:
 			else:
 				sys.stderr.write(x)
 				sys.stderr.write(st1)
-	#		self.outputResult();
-
-		# if(operation == 'intersect'):
-		# 	obj1schema = self.TableDescription[obj1]
-		# 	obj2schema = self.TableDescription[obj2]
-		# 	commonDescription = self.intersectDescription(obj1schema,obj2schema)
-		# 	subtractColumn = self.getPriMul(commonDescription)
-		# #	print subtractColumn
-		# 	if(len(subtractColumn)!=1):
-		# 		return False
-		# 	#TODO replace obj1 and obj2 below with there sql query in bagdict
-		# 	self.runQueries('select * from ' + obj1 + ' as ' + obj1 + ' where ' + obj1+'.'+subtractColumn[0] + ' in (select ' +subtractColumn[0] + ' from ' + obj2 + ')')
-		# 	self.outputResult();
-		# if(operation == 'union' ):
-		# 	self.runQueries('select * from ' + obj1 + ' as ' + obj1 + ' union select * from ' +obj2)
-		
-	# 	if(operation == 'union'):
-	# 		st = '(select * from ' + self.BagDict[obj1][0] + ' as ' +  obj1 + ' ) union ( select * from '+ self.BagDict[obj2][0] + ' as '+obj2 +')';
-	# 		x = self.runQueries(st);
-	# 		if(x==True):
-	# 			self.BagDict[result] = [st,map(lambda x,y:x|y,list1,list2),obj1,obj2] 
-	# 		return x;
-	# 	# if(operation == 'intersect'):		
-	# 	# 	st = '(select * from ' + BagDict[obj1][0] + ' as ' +  obj1 + ') intersect ( select * from '+BagDict[obj2][0] + 'as '+obj2 +')';
-	# 	# 	x = runQueries(st);
-	# 	# 	return x;
-	# 	# if(operation == 'except'):
-	# 	# 	st = '(select * from ' + BagDict[obj1][0] + ' as ' +  obj1 + ') except ( select * from '+BagDict[obj2][0] + 'as '+obj2 +')';
-	# 	# 	x = runQueries(st);
-	# 	# 	return x;
-	# 	if(operation == 'relate'):
-	# 		st = '(select * from '+ self.BagDict[obj1][0] + ' as ' + obj1 + ' ) natural join ( select * from ' + self.BagDict[obj2][0] +' as ' + obj2 + ')';
-	# 		x = self.runQueries(st);
-	# 		if(x==True):
-	# 			self.BagDict[result] = [st,map(lambda x,y : x|y,list1,list2),obj1,obj2]
-	# 		return x;
-	# 	if(operation == 'getCopies'):
-	# 		return self.operate(obj1,obj2,result,'relate')
-	# 	if(operation == 'getDetails'):
-	# 		return self.operate(obj1,obj2,result,'relate')
-	# 	if(operation == 'getIssuedBooks'):
-	# 		return self.operate(obj1,obj2,result,'relate')
-	# 	if(operation == 'getBooksIssued'):
-	# 		return self.operate(obj1,obj2,result,'relate')
-	# 	if(operation == 'getBooksNotIssued'):
-
-	# 	if(operation == 'getReturnedIssues'):
-	# 		return self.operate(obj1,obj2,result,'relate')
-	# 	if(operation == 'getNotReturnedIssues'):
-	# 		return self.operate(obj1,obj2,result,'relate')
-	# 	if(operation == 'getIssuesTakenbyStaff'):
-	# 		return 
-	# 	if(operation == 'getStaffthattookIssue'):
-	# 		return
-	# 	if(operation == 'getReturnsTakenbyStaff'):
-	# 		return
-	# 	if(operation == 'getStaffthattookReturn'):
-			
-# if __name__ == "__main__":
-# 	obj1 = QBO();
-# 	obj1.operate('Customer','Issue','Result','intersect')
