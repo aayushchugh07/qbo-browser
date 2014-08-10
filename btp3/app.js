@@ -11,7 +11,7 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.second_selected_table=null;
     this.operations_list = 'old1';
     //tables_url='file:///home/lakshitarora/Desktop/qbo-browser/qbo-browser/btp3/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
-    tables_url='http://localhost:8000/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
+    tables_url='/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
     this.the_data='initial';
     this.table_cols=[{'abcd':'efgh'}];//table_cols_global;
     this.todoText='initial todotext';
@@ -26,7 +26,7 @@ app.controller('qbo_controller_1',function($scope,$http){
 	    alert('Backend connection failed');
 	});
 
-    second_table_url = "http://localhost:8000/getTableOperations.html";
+    second_table_url = "/getTableOperations.html";
 	$http({method: 'GET', url: second_table_url}).
 	success(function(data, status, headers, config) {
 	    // this callback will be called asynchronously
@@ -40,10 +40,7 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.selectFirstTable=function(table_in){
 	this.first_selected_table=table_in;
 	this.first_selected_table_name=table_in.name;
-	
 	// so instead of above call, i will copy the hard coded data for now
-	
-        
 	top_scope.second_table_options=top_scope.op_tables[table_in.name];
 	this.screen_no+=1;// proceed to next screen
     };
