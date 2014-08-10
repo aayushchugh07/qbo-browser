@@ -50,9 +50,10 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.selectSecondTable=function(table){
 	this.second_selected_table=table;
 	this.second_selected_table_name=table.name;
-	for(i =0 ; i< top_scope.op_tables[table.name].length;i++){
-		if(top_scope.op_tables[table.name][i].name === table.name)
-			top_scope.operations_list= top_scope.op_tables[table.name][i].ops;
+	var first_table=top_scope.first_selected_table_name;
+	for(i =0 ; i< top_scope.op_tables[first_table].length;i++){
+		if(top_scope.op_tables[first_table][i].name === table.name)
+			top_scope.operations_list= top_scope.op_tables[first_table][i].ops;
 	}
 	this.screen_no=3; //proceed to two-table operation selection screen
     }
