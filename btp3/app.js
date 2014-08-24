@@ -18,6 +18,7 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.the_data='initial';
     this.table_cols=[{'abcd':'efgh'}];//table_cols_global;
     this.todoText='initial todotext';
+    this.db_data="Processing query.....";
     $http({method: 'GET', url: tables_url}).
 	success(function(data, status, headers, config) {
 	    // this callback will be called asynch ronously
@@ -62,13 +63,7 @@ app.controller('qbo_controller_1',function($scope,$http){
 	for(i =0 ; i< top_scope.op_tables[first_table].length;i++){
 		//TODO: need to change below from table.name to table.tablename
 		if(top_scope.op_tables[first_table][i].name === table.name){
-		        operations_full_list=top_scope.op_tables[first_table][i].ops;
-			operations_list=[];
-		        for (operation_i=0;operation_i<operations_full_list.length;operation_i++){
-		            operation=operations_full_list[operation_i];
-			    operations_list.push(operation["name"]);
-			}
-		        top_scope.operations_list=operations_list;
+		        top_scope.operations_list=top_scope.op_tables[first_table][i].ops;
 		}
 	}
 	this.screen_no=3; //proceed to two-table operation selection screen
@@ -80,6 +75,19 @@ app.controller('qbo_controller_1',function($scope,$http){
     }
     $scope.selectGranularity=function(){
 	top_scope.todoText='';    
+    }
+    this.selectOperation=function(operation_name){
+	query_url="/cgi/new_query.py?queryname="+operation_name;
+	$http({method: 'GET', url: query_url}).
+	success(function(data, status, headers, config) {
+	    // this callback will be called asynch ronously
+	    // when the response is available
+	    top_scope.db_data=data;
+	    top_scope.screen_no=4;
+	}).
+	error(function(data, status, headers, config) {
+	    alert('Query failed');
+	});
     }
 });
 

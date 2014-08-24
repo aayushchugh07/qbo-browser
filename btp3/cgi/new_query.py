@@ -15,10 +15,10 @@ def printApp():
         pass
     if(query_name==''):
         pass
-    print('''<!Doctype html> <html><head><title>abcd</title></head><body>It works
-           '''+str(qbo.execOperation(query_name))+'''
-           </body></html>''');
-    
+    #print('''<!Doctype html> <html><head><title>abcd</title></head><body>It works
+    #       '''+str(qbo.execOperation(query_name))+'''
+    #       </body></html>''');
+    print (str(qbo.execOperation(query_name)));
 
 if __name__=='__main__':
     printApp()
