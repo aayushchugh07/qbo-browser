@@ -7,17 +7,18 @@ def printApp():
     
     print "Content-type: text/html"
     print
-    # print('''<!Doctype html> <html><head><title>abcd</title></head><body>It works
-    #        '''+str(qbo.try_stuff())+'''
-    #        </body></html>''');
     getvars = cgi.FieldStorage()
-    tablename=''
+    query_name=''
     try:
-        tablename=getvars["bagname"].value
+        query_name=getvars["queryname"].value
     except:
         pass
-    if(tablename==''):
-        
+    if(query_name==''):
+        pass
+    print('''<!Doctype html> <html><head><title>abcd</title></head><body>It works
+           '''+str(qbo.execOperation(query_name))+'''
+           </body></html>''');
+    
 
 if __name__=='__main__':
     printApp()

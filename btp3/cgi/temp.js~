@@ -12,7 +12,7 @@
 	"name":"Issue",
 	"ops":[{"name":"getIssuedBooks","desc":"Issues made for book"}]
     },{
-	"name":"Returns",
+	"name":"Return"
 	"ops":[{"name":"returned_books","desc":"Returns made for books"}]
     }],
 
@@ -31,10 +31,9 @@
 	"name":"Issue",
 	"ops":[{"name":"getIssuedBooks","desc":"Issues made for book"}]
     },{
-	"name":"Returns",
+	"name":"Return"
 	"ops":[{"name":"returned_books","desc":"Returns made for books"}]
     }],
-
 
 
     "Customer": [{
@@ -55,7 +54,6 @@
     }],
 
 
-
     "Issue": [{
 	"name":"Book_Type",
 	"ops":[{"name":"getIssuedBooks","desc":"Issues made for book"}]
@@ -73,8 +71,8 @@
         "ops": [{"name":"returned_issues", "desc":"Issues that have been returned"},{"name":"not_returned_issues","desc":"Issues that have not been returned"}]
     },{
         "name": "Staff",
-        "ops": [{"name":"issues_handled_by_staff","desc":"Issues handled by staff"}]
-    }],
+        "ops": [{"name":"issues_handled_by_staff","desc":"Issues handled by staff"}]}
+    ],
     
 
     "Returns": [{
@@ -90,25 +88,23 @@
         "name": "Issue",
         "ops": [{"name":"returned_issues", "desc":"Issues that have been returned"},{"name":"not_returned_issues","desc":"Issues that have not been returned"}]
     },{
-        "name":"Returns",
-	"ops":["union", "except", "intersect"]
-    },{
-        "name": "Staff",
-        "ops": [{"name":"returns_handled_by_staff","desc":"Returns handled by staff"}]
+        "Returns": ["union", "except", "intersect"]
+    }, {
+        "Staff": ["handled_by"]
     }],
 
 
-
     "Staff": [{
-        "name": "Returns",
-        "ops": [{"name":"returns_handled_by_staff","desc":"Returns handled by staff"}]
-    },{
         "name": "Issue",
-        "ops": [{"name":"issues_handled_by_staff","desc":"Issues handled by staff"}]
-    },{
+        "ops": ["handles"]
+    }, {
+        "name": "Returns",
+        "ops": ["handles"]
+    }, {
         "name": "Staff",
         "ops": ["union", "except", "intersect"]
-    }]
+    }],
+
 
 
 }

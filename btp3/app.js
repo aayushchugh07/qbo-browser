@@ -61,8 +61,15 @@ app.controller('qbo_controller_1',function($scope,$http){
 	this.todoText = top_scope.op_tables[first_table];
 	for(i =0 ; i< top_scope.op_tables[first_table].length;i++){
 		//TODO: need to change below from table.name to table.tablename
-		if(top_scope.op_tables[first_table][i].name === table.name)
-			top_scope.operations_list= top_scope.op_tables[first_table][i].ops;
+		if(top_scope.op_tables[first_table][i].name === table.name){
+		        operations_full_list=top_scope.op_tables[first_table][i].ops;
+			operations_list=[];
+		        for (operation_i=0;operation_i<operations_full_list.length;operation_i++){
+		            operation=operations_full_list[operation_i];
+			    operations_list.push(operation["name"]);
+			}
+		        top_scope.operations_list=operations_list;
+		}
 	}
 	this.screen_no=3; //proceed to two-table operation selection screen
     }
