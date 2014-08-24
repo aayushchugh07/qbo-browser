@@ -12,6 +12,11 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.operations_list = 'old1';
     this.showGranularity = 0;
     this.granularityForm = 'old';
+    $scope.GranularityForm = {
+	checked : {},
+	value : {}};
+    this.firstTableAttributes =null;
+    this.secondTableAttributes = null;
     this.tableDetails=tableDetails;
     //tables_url='file:///home/lakshitarora/Desktop/qbo-browser/qbo-browser/btp3/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
     tables_url='/getTables.html';//http://10.2.56.178:9999/cgi/getTables.py';
@@ -46,7 +51,7 @@ app.controller('qbo_controller_1',function($scope,$http){
 	this.first_selected_table_name=table_in.tablename;
 	// so instead of above call, i will copy the hard coded data for now
 	top_scope.showGranularity=0;
-        
+        this.firstTableAttributes = null;
 	top_scope.second_table_options=top_scope.op_tables[table_in.tablename];
 	this.screen_no+=1;// proceed to next screen
     };
@@ -60,6 +65,7 @@ app.controller('qbo_controller_1',function($scope,$http){
 	this.second_selected_table_name=table.name;
 	var first_table=top_scope.first_selected_table_name;
 	this.todoText = top_scope.op_tables[first_table];
+	this.secondTableAttributes = null;
 	for(i =0 ; i< top_scope.op_tables[first_table].length;i++){
 		//TODO: need to change below from table.name to table.tablename
 		if(top_scope.op_tables[first_table][i].name === table.name){
@@ -71,6 +77,23 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.granularityFormVisibility = function(table,table_number){
 	top_scope.showGranularity=top_scope.showGranularity==table_number ? 0 : table_number;
 	top_scope.granularityForm = top_scope.tableDetails[table];
+	var alreadyGranulared = true
+	if(top_scope.showGranularity == 1 && top_scope.firstTableAttributes != null)
+		top_scope.GranularityForm = top_scope.firstTableAttributes;
+	else if (top_scope.showGranularity== 2 && top_scope.secondTableAttributes != null)
+		top_scope.GranularityForm = top_scope.secondTableAttributes;
+	else{
+		top_scope.GranularityForm = {checked:{},value:{}};
+		alreadyGranulared = false
+	}
+	for(i=0; i<top_scope.tableDetails[table].length ; i++){
+		var colName = top_scope.tableDetails[table][i];
+		top_scope.todoText = colName;
+		if(!alreadyGranulared){
+		top_scope.GranularityForm.checked[colName.name] = false;
+		top_scope.GranularityForm.value[colName.name] = "";
+		}
+	}
 	//top_scope.test_variable = top_scope.tableDetails[table];
     }
     $scope.selectGranularity=function(){
@@ -88,7 +111,14 @@ app.controller('qbo_controller_1',function($scope,$http){
 	error(function(data, status, headers, config) {
 	    alert('Query failed');
 	});
-    }
+    };
+    $scope.changeGranularity=function(){
+	if(top_scope.showGranularity == 1 )
+	    top_scope.firstTableAttributes = top_scope.GranularityForm;
+	else if(top_scope.showGranularity == 2)
+	    top_scope.secondTableAttributes = top_scope.GranularityForm;  
+	top_scope.todoText = "nicccce"; 
+    };
 });
 
 var all_tables_trial=[{
