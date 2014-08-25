@@ -12,7 +12,7 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.operations_list = 'old1';
     this.showGranularity = 0;
     this.granularityForm = 'old';
-    $scope.GranularityForm = {
+    this.GranularityForm = {
 	checked : {},
 	value : {}};
     this.firstTableAttributes =null;
@@ -54,6 +54,12 @@ app.controller('qbo_controller_1',function($scope,$http){
         this.firstTableAttributes = null;
 	top_scope.second_table_options=top_scope.op_tables[table_in.tablename];
 	this.screen_no+=1;// proceed to next screen
+	this.todoText = this.tableDetails[table_in.tablename];
+	for(i=0;i<this.tableDetails[table_in.tablename].length;i++){
+		var colName = top_scope.tableDetails[table_in.tablename][i];
+		this.GranularityForm.checked[colName.name] = true;
+		this.GranularityForm.value[colName.name] = "";
+	}
     };
     this.goBack=function(){
 	this.screen_no-=1;
@@ -72,13 +78,18 @@ app.controller('qbo_controller_1',function($scope,$http){
 		        top_scope.operations_list=top_scope.op_tables[first_table][i].ops;
 		}
 	}
+	for(i=0;i<this.tableDetails[table.name].length;i++){
+		var colName = top_scope.tableDetails[table.name][i];
+		this.GranularityForm.checked[colName.name] = true;
+		this.GranularityForm.value[colName.name] = "";
+	}
 	this.screen_no=3; //proceed to two-table operation selection screen
     }
     this.granularityFormVisibility = function(table,table_number){
 	top_scope.showGranularity=top_scope.showGranularity==table_number ? 0 : table_number;
 	top_scope.granularityForm = top_scope.tableDetails[table];
-	var alreadyGranulared = true
-	if(top_scope.showGranularity == 1 && top_scope.firstTableAttributes != null)
+	//var alreadyGranulared = true
+	/*if(top_scope.showGranularity == 1 && top_scope.firstTableAttributes != null)
 		top_scope.GranularityForm = top_scope.firstTableAttributes;
 	else if (top_scope.showGranularity== 2 && top_scope.secondTableAttributes != null)
 		top_scope.GranularityForm = top_scope.secondTableAttributes;
@@ -93,7 +104,7 @@ app.controller('qbo_controller_1',function($scope,$http){
 		top_scope.GranularityForm.checked[colName.name] = false;
 		top_scope.GranularityForm.value[colName.name] = "";
 		}
-	}
+	}*/
 	//top_scope.test_variable = top_scope.tableDetails[table];
     }
     $scope.selectGranularity=function(){
@@ -101,11 +112,33 @@ app.controller('qbo_controller_1',function($scope,$http){
     }
     this.selectOperation=function(operation_name){
 	query_url="/cgi/new_query.py?queryname="+operation_name;
+	top_scope_new=this;
+	this.todoText = "yoyo";
 	$http({method: 'GET', url: query_url}).
 	success(function(data, status, headers, config) {
 	    // this callback will be called asynch ronously
 	    // when the response is available
-	    top_scope.db_data=data;
+	    top_scope.todoText = "nul";
+	    var local_data = [];
+	    for(i=0;i<data.length;i++){
+		local_dict = {};
+		var to_keep = 1;
+		for(key in top_scope.GranularityForm.value)
+			if(key in data[i])
+				if(top_scope.GranularityForm.value[key]!= "" && data[i][key]!=top_scope.GranularityForm.value[key]){
+					//top_scope.todoText = data[i];
+					to_keep=0;
+				}
+	        if(to_keep){
+			for(key in top_scope.GranularityForm.checked)
+				if(key in data[i])
+					if(top_scope.GranularityForm.checked[key]==true)
+						local_dict[key] = data[i][key];
+			local_data.push(local_dict);
+		}
+		//top_scope.todoText = data[i];
+	    }
+	    top_scope.db_data=local_data;
 	    top_scope.screen_no=4;
 	}).
 	error(function(data, status, headers, config) {
@@ -113,10 +146,10 @@ app.controller('qbo_controller_1',function($scope,$http){
 	});
     };
     $scope.changeGranularity=function(){
-	if(top_scope.showGranularity == 1 )
-	    top_scope.firstTableAttributes = top_scope.GranularityForm;
-	else if(top_scope.showGranularity == 2)
-	    top_scope.secondTableAttributes = top_scope.GranularityForm;  
+	//if(top_scope.showGranularity == 1 )
+	  //  top_scope.firstTableAttributes = top_scope.GranularityForm;
+	//else if(top_scope.showGranularity == 2)
+	  //  top_scope.secondTableAttributes = top_scope.GranularityForm;  
 	top_scope.todoText = "nicccce"; 
     };
 });
