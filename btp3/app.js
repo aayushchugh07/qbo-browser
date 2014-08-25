@@ -24,6 +24,7 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.table_cols=[{'abcd':'efgh'}];//table_cols_global;
     this.todoText='initial todotext';
     this.db_data="Processing query.....";
+    this.db_headers=[]
     $http({method: 'GET', url: tables_url}).
 	success(function(data, status, headers, config) {
 	    // this callback will be called asynch ronously
@@ -106,6 +107,15 @@ app.controller('qbo_controller_1',function($scope,$http){
 	    // this callback will be called asynch ronously
 	    // when the response is available
 	    top_scope.db_data=data;
+	    // updating table headers for displaying db_data
+	    if(data.length>0){
+		var data_point=data[0];
+		for (column in data_point){
+		    if(column!="_is_shown"){
+			top_scope.db_headers.push(column);
+		    }
+		}
+	    }
 	    top_scope.screen_no=4;
 	}).
 	error(function(data, status, headers, config) {

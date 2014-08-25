@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import MySQLdb,sys
+import MySQLdb,sys,json
 class QBO:
     _databaseInfo = dict(
 			host = "localhost",
@@ -30,7 +30,13 @@ class QBO:
         "issues_handled_by_staff" : "select * from Issue natural join Staff;",
         "customers_of_book" : "select * from Book_Type natural join (select * from Book_Copy natural join (select * from (select * from Issue natural join Customer) as t1) as t2) as t3;",
         "returns_of_book_customer" : "select * from Book_Type natural join (select * from Book_Copy natural join (select * from  Customer natural join (select i.Issue_ID,i.Book_ID,i.Issue_date,i.Customer_ID,i.expiry_date,i.Staff_ID as 'Issuing Staff', r.Returns_Date, r.Staff_ID as 'Returning Staff' from Issue as i join Returns as r where i.Issue_ID = r.Issue_ID ) as t1) as t2) as t3;",
-        "book_details" : "select * from Book_Type natural join Book_Copy;"
+        "book_details" : "select * from Book_Type natural join Book_Copy;",
+        "Book_Type":"select * from Book_Type;",
+        "Book_Copy":"select * from Book_Copy;",
+        "Customer":"select * from Customer;",
+        "Issue":"select * from Issue;",
+        "Returns":"select * from Returns;",
+        "Staff":"select * from Staff;"
     }
     def getDescription(self):
         for o in self.ObjectsList:
@@ -45,6 +51,8 @@ class QBO:
             dataCursor = self.dbh.cursor( cursorclass=MySQLdb.cursors.DictCursor )
             dataCursor.execute(st)
             self.resultData = dataCursor.fetchall()
+            for result_item in self.resultData:
+                result_item['_is_shown']=True
             return True
         except MySQLdb.Error,e:
             return "Error %d : %s"%(e.args[0],e.args[1])
@@ -69,7 +77,7 @@ class QBO:
             self.runQueries(query)
         except:
             raise Exception("Exception occured in trying to run query")
-        return self.resultData
+        return json.dumps(self.resultData)
 
     def __init__(self):
         try:

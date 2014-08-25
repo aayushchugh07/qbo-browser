@@ -47,7 +47,7 @@
                  
 	       </div>
 	       <div class="panel-body">
-			<button class="btn btn-default" ng-click="viewData(qbo.first_selected_table_name,1)" >View Data</button>
+			<button class="btn btn-default" ng-click="qbo.selectOperation(qbo.first_selected_table_name)" >View Data</button>
 		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.first_selected_table_name,1)" ng-show="qbo.showGranularity!==1"> Show Details</button>
 		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.first_selected_table_name,1)" ng-show="qbo.showGranularity===1"> Hide Details</button>                  
 	       </div>
@@ -80,7 +80,7 @@
                  
 	       </div>
 	       <div class="panel-body">
-			<button class="btn btn-default" ng-click="viewData(qbo.second_selected_table_name,2)" >View Data</button>
+			<button class="btn btn-default" ng-click="qbo.selectOperation(qbo.second_selected_table_name)" >View Data</button>
 		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.second_selected_table_name,2)" ng-show="qbo.showGranularity!==2"> Show Details</button>
 		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.second_selected_table_name,2)" ng-show="qbo.showGranularity===2"> Hide Details</button>                  
 	       </div>
@@ -160,6 +160,13 @@
        </div>
        <div ng-show="qbo.screen_no===4">
 	 {{qbo.db_data}}
+	 <table class="table table-striped">
+	   <thead>
+             <tr>
+               <th ng-repeat="column in qbo.db_headers" >{{column}}</th>
+             </tr>
+	   </thead>
+	 </table>
        </div>
      </div>
    </div>
