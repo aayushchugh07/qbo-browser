@@ -12,7 +12,7 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.operations_list = 'old1';
     this.showGranularity = 0;
     this.granularityForm = 'old';
-    $scope.GranularityForm = {
+    this.GranularityForm = {
 	checked : {},
 	value : {}};
     this.firstTableAttributes =null;
@@ -25,6 +25,7 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.todoText='initial todotext';
     this.db_data="Processing query.....";
     this.db_headers=[]
+    this.screen_no_stack=[]
     $http({method: 'GET', url: tables_url}).
 	success(function(data, status, headers, config) {
 	    // this callback will be called asynch ronously
@@ -54,11 +55,29 @@ app.controller('qbo_controller_1',function($scope,$http){
 	top_scope.showGranularity=0;
         this.firstTableAttributes = null;
 	top_scope.second_table_options=top_scope.op_tables[table_in.tablename];
-	this.screen_no+=1;// proceed to next screen
+	top_scope.goToNextScreen();// proceed to next screen
+	this.todoText = this.tableDetails[table_in.tablename];
+	for(i=0;i<this.tableDetails[table_in.tablename].length;i++){
+		var colName = top_scope.tableDetails[table_in.tablename][i];
+		this.GranularityForm.checked[colName.name] = true;
+		this.GranularityForm.value[colName.name] = "";
+	}
     };
     this.goBack=function(){
-	this.screen_no-=1;
+	next_screen=1;
+	if(top_scope.screen_no_stack.length>0)
+	    next_screen=top_scope.screen_no_stack.pop();
+	top_scope.screen_no=next_screen;
     }
+    this.goToScreen=function(next_screen){
+	top_scope.screen_no_stack.push(top_scope.screen_no);
+	top_scope.screen_no=next_screen;
+    }
+    this.goToNextScreen=function(){
+	top_scope.screen_no_stack.push(top_scope.screen_no);
+	top_scope.screen_no=top_scope.screen_no+1;
+    }
+
     this.selectSecondTable=function(table){
 	top_scope.showGranularity=0;
 	this.second_selected_table=table;
@@ -73,13 +92,18 @@ app.controller('qbo_controller_1',function($scope,$http){
 		        top_scope.operations_list=top_scope.op_tables[first_table][i].ops;
 		}
 	}
-	this.screen_no=3; //proceed to two-table operation selection screen
+	for(i=0;i<this.tableDetails[table.name].length;i++){
+		var colName = top_scope.tableDetails[table.name][i];
+		this.GranularityForm.checked[colName.name] = true;
+		this.GranularityForm.value[colName.name] = "";
+	}
+	top_scope.goToScreen(3); //proceed to two-table operation selection screen
     }
     this.granularityFormVisibility = function(table,table_number){
 	top_scope.showGranularity=top_scope.showGranularity==table_number ? 0 : table_number;
 	top_scope.granularityForm = top_scope.tableDetails[table];
-	var alreadyGranulared = true
-	if(top_scope.showGranularity == 1 && top_scope.firstTableAttributes != null)
+	//var alreadyGranulared = true
+	/*if(top_scope.showGranularity == 1 && top_scope.firstTableAttributes != null)
 		top_scope.GranularityForm = top_scope.firstTableAttributes;
 	else if (top_scope.showGranularity== 2 && top_scope.secondTableAttributes != null)
 		top_scope.GranularityForm = top_scope.secondTableAttributes;
@@ -94,39 +118,84 @@ app.controller('qbo_controller_1',function($scope,$http){
 		top_scope.GranularityForm.checked[colName.name] = false;
 		top_scope.GranularityForm.value[colName.name] = "";
 		}
-	}
+	}*/
 	//top_scope.test_variable = top_scope.tableDetails[table];
     }
     $scope.selectGranularity=function(){
 	top_scope.todoText='';    
     }
+    this.updateHeaders=function(){
+	//remove the headers for which no data exists in any row
+	to_keep={};
+	for(column_no in top_scope.db_headers){
+	    to_keep[top_scope.db_headers[column_no]]=false;
+	}
+	for(data_point_no in top_scope.db_data){
+	    data_point=top_scope.db_data[data_point_no];
+	    for(column in to_keep)
+		if(data_point[column])to_keep[column]=true;
+	}
+	var db_headers=[];
+	for(column in to_keep){
+	    if(to_keep[column])
+		db_headers.push(column);
+	}
+	top_scope.db_headers=db_headers;
+    }
     this.selectOperation=function(operation_name){
 	query_url="/cgi/new_query.py?queryname="+operation_name;
+	top_scope_new=this;
+	this.todoText = "yoyo";
 	$http({method: 'GET', url: query_url}).
 	success(function(data, status, headers, config) {
 	    // this callback will be called asynch ronously
 	    // when the response is available
+
 	    top_scope.db_data=data;
+	    top_scope.db_headers=[];
 	    // updating table headers for displaying db_data
-	    if(data.length>0){
-		var data_point=data[0];
+
+
+	    var local_data = [];
+	    for(i=0;i<data.length;i++){
+		local_dict = {};
+		var to_keep = 1;
+		for(key in top_scope.GranularityForm.value)
+			if(key in data[i])
+				if(top_scope.GranularityForm.value[key]!= "" && -1==data[i][key].search(new RegExp(top_scope.GranularityForm.value[key],"i"))){
+					//top_scope.todoText = data[i];
+					to_keep=0;
+				}
+	        if(to_keep){
+			for(key in top_scope.GranularityForm.checked)
+				if(key in data[i])
+					if(top_scope.GranularityForm.checked[key]==true)
+						local_dict[key] = data[i][key];
+			local_data.push(local_dict);
+		}
+		//top_scope.todoText = data[i];
+	    }
+	    if(local_data.length>0){
+		var data_point=local_data[0];
 		for (column in data_point){
 		    if(column!="_is_shown"){
 			top_scope.db_headers.push(column);
 		    }
 		}
 	    }
-	    top_scope.screen_no=4;
+	    top_scope.updateHeaders();
+	    top_scope.db_data=local_data;
+	    top_scope.goToScreen(4);
 	}).
 	error(function(data, status, headers, config) {
 	    alert('Query failed');
 	});
     };
     $scope.changeGranularity=function(){
-	if(top_scope.showGranularity == 1 )
-	    top_scope.firstTableAttributes = top_scope.GranularityForm;
-	else if(top_scope.showGranularity == 2)
-	    top_scope.secondTableAttributes = top_scope.GranularityForm;  
+	//if(top_scope.showGranularity == 1 )
+	  //  top_scope.firstTableAttributes = top_scope.GranularityForm;
+	//else if(top_scope.showGranularity == 2)
+	  //  top_scope.secondTableAttributes = top_scope.GranularityForm;  
 	top_scope.todoText = "nicccce"; 
     };
 });

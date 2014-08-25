@@ -24,8 +24,8 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="" ng-click="qbo.screen_no=1">Home</a></li>
-            <li><a href="#about">Data Viewer</a></li>
+            <li ng-class="{active: qbo.screen_no!=4}"><a href="" ng-click="qbo.goToScreen(1)">Home</a></li>
+            <li ng-class="{active: qbo.screen_no===4 }"><a href="" ng-click="qbo.goToScreen(4)">Data Viewer</a></li>
             <li><a href="#contact">Feedback</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -158,24 +158,23 @@
 	     </a>
 	 </div>
        </div>
-       <div ng-show="qbo.screen_no===4">
-	 {{qbo.db_data}}
+       <div ng-show="qbo.screen_no===4" class="row" style="padding-left: 40px; padding-right: 40px;">
 	 <table class="table table-striped">
 	   <thead>
              <tr>
                <th ng-repeat="column in qbo.db_headers" >{{column}}</th>
              </tr>
 	   </thead>
+	   <tbody>
+	     <tr ng-repeat="data_point in qbo.db_data">
+	       <td ng-repeat="column in qbo.db_headers">
+		 {{data_point[column]}}
+	       </td>
+	     </tr>
 	 </table>
        </div>
      </div>
    </div>
-    <!-- <p>{{qbo.table_cols}}</p>
-     <p>{{qbo.todoText}}</p>
-     <p>{{qbo.the_data}} {{qbo.operations_list}}</p>-->
-<!--<p>{{qbo.GranularityForm}} </p><br/>
-<p>{{qbo.todoText}} </p><br/>
-<p>{{qbo.firstTableAttributes}} </p><br/>-->
    <script type="text/javascript" src="res/angular.min.js"> </script>
    <script type="text/javascript" src="app.js"></script>
  </body>

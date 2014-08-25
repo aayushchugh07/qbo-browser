@@ -1,8 +1,5 @@
 {
     "Book_Type": [{
-        "name": "Book_Type",
-        "ops": ["union", "except", "intersect"]
-    }, {
         "name": "Book_Copy",
         "ops": [{"name":"book_details","desc":"Copies for the books"}]
     },{
@@ -22,9 +19,6 @@
         "name": "Book_Type",
         "ops": [{"name":"book_details","desc":"Copies for the books"}]
     }, {
-        "name": "Book_Copy",
-        "ops": ["union", "except", "intersect"]
-    },{
 	"name":"Customer",
 	"ops":[{"name":"customers_of_book","desc":"Customers who issue the book"},{"name":"issues_of_book_customer","desc":"Issues by customer for book"},{"name":"returns_of_book_customer","desc":"Returns by customer for book"}]
     },{
@@ -43,9 +37,6 @@
     },{
 	"name":"Book_Copy",
 	"ops":[{"name":"customers_of_book","desc":"Customers who issue the book"},{"name":"issues_of_book_customer","desc":"Issues by customer for book"},{"name":"returns_of_book_customer","desc":"Returns by customer for book"}]
-    },{
-        "name": "Customer",
-        "ops": ["union", "except", "intersect"]
     }, {
         "name": "Issue",
         "ops": [{"name":"issues_by_customer", "desc":"Issues for the customer"}]
@@ -65,9 +56,6 @@
     },{
         "name": "Customer",
         "ops": [{"name":"issues_by_customer", "desc":"Issues for the customer"}]
-    },{
-        "name": "Issue",
-        "ops": ["union", "except", "intersect"]
     }, {
         "name": "Returns",
         "ops": [{"name":"returned_issues", "desc":"Issues that have been returned"},{"name":"not_returned_issues","desc":"Issues that have not been returned"}]
@@ -90,9 +78,6 @@
         "name": "Issue",
         "ops": [{"name":"returned_issues", "desc":"Issues that have been returned"},{"name":"not_returned_issues","desc":"Issues that have not been returned"}]
     },{
-        "name":"Returns",
-	"ops":["union", "except", "intersect"]
-    },{
         "name": "Staff",
         "ops": [{"name":"returns_handled_by_staff","desc":"Returns handled by staff"}]
     }],
@@ -105,9 +90,6 @@
     },{
         "name": "Issue",
         "ops": [{"name":"issues_handled_by_staff","desc":"Issues handled by staff"}]
-    },{
-        "name": "Staff",
-        "ops": ["union", "except", "intersect"]
     }]
 
 
