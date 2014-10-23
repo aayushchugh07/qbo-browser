@@ -26,8 +26,8 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.db_data="Processing query.....";
     this.db_headers=[]
     this.screen_no_stack=[]
-    this.record_count_text='0'; //for 'view data screen'
-    this.operation_text="Nothing selected" //for 'view data screen'
+    this.record_count_text='Nothing Selected'; //for 'view data screen'
+    this.operation_text=" (Nothing) " //for 'view data screen'
     $http({method: 'GET', url: tables_url}).
 	success(function(data, status, headers, config) {
 	    // this callback will be called asynch ronously
@@ -144,7 +144,7 @@ app.controller('qbo_controller_1',function($scope,$http){
 	}
 	top_scope.db_headers=db_headers;
     }
-    this.selectOperation=function(operation_name){
+    this.selectOperation=function(operation_name,operation_desc_){
 	query_url="/cgi/new_query.py?queryname="+operation_name;
 	top_scope_new=this;
 	this.todoText = "yoyo";
@@ -187,7 +187,8 @@ app.controller('qbo_controller_1',function($scope,$http){
 	    }
 	    top_scope.updateHeaders();
 	    top_scope.db_data=local_data;
-	    top_scope.record_count_text=
+	    top_scope.record_count_text="Total "+String(top_scope.db_data.length);
+	    top_scope.operation_text=operation_desc_;
 	    top_scope.goToScreen(4);
 	}).
 	error(function(data, status, headers, config) {

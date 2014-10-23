@@ -37,7 +37,11 @@
        
        <button ng-show="qbo.screen_no!=1" class="btn btn-primary" ng-click="qbo.goBack()"> &lt;-Back </button>
        <h3 ng-show="qbo.screen_no===1"> Select first table </h3>
-       <h4 ng-show="qbo.screen_no===4">Showing data</h4>
+       <div ng-show="qbo.screen_no===4">
+	 <h4>Showing data for {{qbo.operation_text}}</h4>
+	 {{qbo.record_count_text}}
+	 <br/>
+       </div>
        <div class="row" style="padding-top: 10px">
 	 <div ng-show="qbo.screen_no>=2 && qbo.screen_no<=3">
 	   <div class="col-md-3">
@@ -47,7 +51,7 @@
                  
 	       </div>
 	       <div class="panel-body">
-			<button class="btn btn-default" ng-click="qbo.selectOperation(qbo.first_selected_table_name)" >View Data</button>
+			<button class="btn btn-default" ng-click="qbo.selectOperation(qbo.first_selected_table_name,qbo.first_selected_table_name)" >View Data</button>
 		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.first_selected_table_name,1)" ng-show="qbo.showGranularity!==1"> Show Details</button>
 		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.first_selected_table_name,1)" ng-show="qbo.showGranularity===1"> Hide Details</button>                  
 	       </div>
@@ -80,7 +84,7 @@
                  
 	       </div>
 	       <div class="panel-body">
-			<button class="btn btn-default" ng-click="qbo.selectOperation(qbo.second_selected_table_name)" >View Data</button>
+			<button class="btn btn-default" ng-click="qbo.selectOperation(qbo.second_selected_table_name,qbo.second_selected_table_name)" >View Data</button>
 		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.second_selected_table_name,2)" ng-show="qbo.showGranularity!==2"> Show Details</button>
 		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.second_selected_table_name,2)" ng-show="qbo.showGranularity===2"> Hide Details</button>                  
 	       </div>
@@ -149,7 +153,7 @@
 	<h3 ng-show="qbo.screen_no===3" > Select Operation </h3>
 	 <div ng-repeat="operation in qbo.operations_list" ng-show="qbo.screen_no===3">
 	   <div class="col-md-3">
-	     <a href="" ng-click="qbo.selectOperation(operation.name)">
+	     <a href="" ng-click="qbo.selectOperation(operation.name,operation.desc)">
                <div class="panel panel-primary" ng-click="handleClick(2)">
 		 <div class="panel-heading">
 		   <h3 class="panel-title">{{operation.desc}}</h3>
