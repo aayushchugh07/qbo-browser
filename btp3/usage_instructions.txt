@@ -7,7 +7,7 @@ The Library-QBO system allows anyone to read the contents stored in a sample lib
 
 - Below the selected table, a list of other related tables  can be seen. In each related table, there is a list of 'operations' that you can choose from. You can select the second table from this list. (For example, you may select Book_Copy. That will show the operation 'Copies for the books'.)
 
-- Upon selecting the second table, you can select one of the operations available. If you want to specify some details, you can click on 'show details' in the table and fill in the data in the space shown.( For example, before clicking on the operation, you may click on 'Show details' and type 'harry' in the 'BookName' space. Now, you will see only the data for names with 'harry' in them. Now if you click on 'Copies for the books', you can see the count and data for copies of 'Harry Potter' along with any other books.)
+- Upon selecting the second table, you can select one of the operations available. If you want to specify some details, you can click on 'show details' in the table and fill in the data in the space shown.( For example, before clicking on the operation, you may click on 'Show details' and type 'harry potter' in the 'BookName' space. Now, you will see only the data for names with 'harry potter' in them. Now if you click on 'Copies for the books', you can see the count and data for copies of 'Harry Potter' books.)
 
 - This way, different operations can be used by users to get their data. (You may press 'Home' on top of the screen to go to the starting screen.) 
 
