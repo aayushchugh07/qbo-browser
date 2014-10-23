@@ -1,0 +1,14 @@
+Using the system:
+The Library-QBO system allows anyone to read the contents stored in a sample library database. It is designed to showcase how we can allow users to use a database with many features, without having to learn programming or scripting.
+ 
+- The home screen shows 6 tables, which exist in our library database. Please select the table that seems most relevant to what you wish to find. (For example, you may wish to find the number of 'Harry Potter' books. You may select 'Book_Type'.)
+
+- Upon clicking, you can see the selected table with option to show the table data and to specify any values that you might be looking for. (For example, you may select 'View Data' to see that ISBN 1234 exists for book Harry Potter, Edition 1. Then you may press 'back' to come back.)
+
+- Below the selected table, a list of other related tables  can be seen. In each related table, there is a list of 'operations' that you can choose from. You can select the second table from this list. (For example, you may select Book_Copy. That will show the operation 'Copies for the books'.)
+
+- Upon selecting the second table, you can select one of the operations available. If you want to specify some details, you can click on 'show details' in the table and fill in the data in the space shown.( For example, before clicking on the operation, you may click on 'Show details' and type 'harry' in the 'BookName' space. Now, you will see only the data for names with 'harry' in them. Now if you click on 'Copies for the books', you can see the count and data for copies of 'Harry Potter' along with any other books.)
+
+- This way, different operations can be used by users to get their data. (You may press 'Home' on top of the screen to go to the starting screen.) 
+
+   
