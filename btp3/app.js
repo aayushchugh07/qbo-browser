@@ -7,6 +7,7 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.op_tables=null;
     this.test_variable = null;
     this.first_selected_table_name=null;
+    this.second_selected_table_name=null;
     this.first_selected_table=null;
     this.second_selected_table=null;
     this.operations_list = 'old1';
@@ -28,6 +29,8 @@ app.controller('qbo_controller_1',function($scope,$http){
     this.screen_no_stack=[]
     this.record_count_text='Nothing Selected'; //for 'view data screen'
     this.operation_text=" (Nothing) " //for 'view data screen'
+    this.allow_object_select=false;
+    this.object_select_allowed_for=""; //name of table for which allow_object_select is true
     $http({method: 'GET', url: tables_url}).
 	success(function(data, status, headers, config) {
 	    // this callback will be called asynch ronously
@@ -102,7 +105,7 @@ app.controller('qbo_controller_1',function($scope,$http){
 	top_scope.goToScreen(3); //proceed to two-table operation selection screen
     }
     this.granularityFormVisibility = function(table,table_number){
-	top_scope.showGranularity=top_scope.showGranularity==table_number ? 0 : table_number;
+	top_scope.showGranularity=(top_scope.showGranularity==table_number ? 0 : table_number);
 	top_scope.granularityForm = top_scope.tableDetails[table];
 	//var alreadyGranulared = true
 	/*if(top_scope.showGranularity == 1 && top_scope.firstTableAttributes != null)
@@ -144,6 +147,33 @@ app.controller('qbo_controller_1',function($scope,$http){
 	}
 	top_scope.db_headers=db_headers;
     }
+    this.selectOneObject=function(tuple_data){
+	table_name=top_scope.object_select_allowed_for;
+	db_headers=top_scope.db_headers;
+	for (var header_i=0;header_i<db_headers.length;header_i++){
+	    var key=db_headers[header_i];
+	    top_scope.GranularityForm.value[key]=tuple_data[key];
+	    top_scope.GranularityForm.checked[key]=true;
+	}
+	var table_number;
+	if(table_name==top_scope.first_selected_table_name)table_number=1;
+	else table_number=2;
+	top_scope.showGranularity=0; //because granularityFormVisibility will toggle the granularity
+	top_scope.granularityFormVisibility(table_name,table_number);
+	top_scope.goBack();
+	
+	
+    }
+    this.clearGranularity=function(){
+	var formvals=top_scope.GranularityForm.value;
+	for (valkey in formvals){
+	    formvals[valkey]="";
+	}
+	var formchecked=top_scope.GranularityForm.checked;
+	for (checkedkey in formchecked){
+	    formchecked[checkedkey]=true;
+	}
+    }
     this.selectOperation=function(operation_name,operation_desc_){
 	query_url="/cgi/new_query.py?queryname="+operation_name;
 	top_scope_new=this;
@@ -162,12 +192,13 @@ app.controller('qbo_controller_1',function($scope,$http){
 	    for(i=0;i<data.length;i++){
 		local_dict = {};
 		var to_keep = 1;
-		for(key in top_scope.GranularityForm.value)
-			if(key in data[i])
+		for(key in top_scope.GranularityForm.value){
+		    if(key in data[i])
 				if(top_scope.GranularityForm.value[key]!= "" && -1==data[i][key].search(new RegExp(top_scope.GranularityForm.value[key],"i"))){
 					//top_scope.todoText = data[i];
 					to_keep=0;
 				}
+		}
 	        if(to_keep){
 			for(key in top_scope.GranularityForm.checked)
 				if(key in data[i])
@@ -189,6 +220,16 @@ app.controller('qbo_controller_1',function($scope,$http){
 	    top_scope.db_data=local_data;
 	    top_scope.record_count_text="Total "+String(top_scope.db_data.length);
 	    top_scope.operation_text=operation_desc_;
+	    // update allow_object_select, for selecting object-level instead of class-level. 
+	    // first search in list HACK!
+	    tables_list=['Book_Type','Book_Copy','Customer','Issue','Returns','Staff'];
+	    top_scope.allow_object_select=false;
+	    for(var ti=0;ti<tables_list.length;ti++){
+		if(operation_name==tables_list[ti]){
+		    top_scope.allow_object_select=true;
+		    top_scope.object_select_allowed_for=operation_name;
+		}
+	    }
 	    top_scope.goToScreen(4);
 	}).
 	error(function(data, status, headers, config) {

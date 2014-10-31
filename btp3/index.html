@@ -70,7 +70,7 @@
 						</div>
 					</div>
 				</div>
-                       <input class="btn btn-default" type="submit" value="Change">
+                       <input class="btn btn-default" type="submit" value="Clear all" ng-click="qbo.clearGranularity()">
                        </div>
                    </form>
              </div>
@@ -103,7 +103,7 @@
 						</div>
 					</div>
 				</div>
-                       <input class="btn btn-default" type="submit" value="Change">
+                       <input class="btn btn-default" type="submit" value="Clear All" ng-click="qbo.clearGranularity()">
                        </div>
                    </form>
              </div>
@@ -169,12 +169,22 @@
                <th ng-repeat="column in qbo.db_headers" >{{column}}</th>
              </tr>
 	   </thead>
+	   
 	   <tbody>
-	     <tr ng-repeat="data_point in qbo.db_data">
+	       	 
+	     <tr ng-repeat="data_point in qbo.db_data" ng-show="qbo.allow_object_select===true">
+	       <td ng-repeat="column in qbo.db_headers">
+		 <a href="" ng-click="qbo.selectOneObject(data_point)" style="color: #003366">
+		   {{data_point[column]}}
+		 </a>
+	       </td>
+	     </tr>
+	     <tr ng-repeat="data_point in qbo.db_data" ng-show="qbo.allow_object_select===false">
 	       <td ng-repeat="column in qbo.db_headers">
 		 {{data_point[column]}}
 	       </td>
 	     </tr>
+	   </tbody>
 	 </table>
        </div>
      </div>
