@@ -44,7 +44,7 @@
        </div>
        <div class="row" style="padding-top: 10px">
 	 <div ng-show="qbo.screen_no>=2 && qbo.screen_no<=3">
-	   <div class="col-md-3">
+	   <div class="col-md-4">
              <div class="panel panel-default">
 	       <div class="panel-heading">
                    <span class="panel-title">{{qbo.first_selected_table_name}}</span>
@@ -53,7 +53,8 @@
 	       <div class="panel-body">
 			<button class="btn btn-default" ng-click="qbo.selectOperation(qbo.first_selected_table_name,qbo.first_selected_table_name)" >View Data</button>
 		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.first_selected_table_name,1)" ng-show="qbo.showGranularity!==1"> Show Details</button>
-		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.first_selected_table_name,1)" ng-show="qbo.showGranularity===1"> Hide Details</button>                  
+		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.first_selected_table_name,1)" ng-show="qbo.showGranularity===1"> Hide Details</button>       
+		<input class="btn btn-default" type="submit" value="Clear details" ng-click="qbo.clearGranularity()">
 	       </div>
                    <form ng-submit="changeGranularity()" ng-show="qbo.showGranularity===1">
                        <div class="col" >
@@ -70,14 +71,14 @@
 						</div>
 					</div>
 				</div>
-                       <input class="btn btn-default" type="submit" value="Clear all" ng-click="qbo.clearGranularity()">
+                       
                        </div>
                    </form>
              </div>
 	   </div>
 	 </div>
          <div ng-show="qbo.screen_no===3">
-	   <div class="col-md-3">
+	   <div class="col-md-4">
 	     <div class="panel panel-default">
 	       <div class="panel-heading">
                    <span class="panel-title">{{qbo.second_selected_table_name}}</span>
@@ -87,6 +88,7 @@
 			<button class="btn btn-default" ng-click="qbo.selectOperation(qbo.second_selected_table_name,qbo.second_selected_table_name)" >View Data</button>
 		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.second_selected_table_name,2)" ng-show="qbo.showGranularity!==2"> Show Details</button>
 		<button class="btn btn-default" ng-click="qbo.granularityFormVisibility(qbo.second_selected_table_name,2)" ng-show="qbo.showGranularity===2"> Hide Details</button>                  
+		<input class="btn btn-default" type="submit" value="Clear details" ng-click="qbo.clearGranularity()">
 	       </div>
                    <form ng-submit="changeGranularity()" ng-show="qbo.showGranularity===2">
                        <div class="col" >
@@ -103,7 +105,6 @@
 						</div>
 					</div>
 				</div>
-                       <input class="btn btn-default" type="submit" value="Clear All" ng-click="qbo.clearGranularity()">
                        </div>
                    </form>
              </div>
