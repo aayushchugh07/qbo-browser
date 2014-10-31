@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import MySQLdb,sys,json
+import MySQLdb,sys,json,datetime
 class QBO:
     _databaseInfo = dict(
 			host = "localhost",
@@ -77,7 +77,7 @@ class QBO:
             self.runQueries(query)
         except:
             raise Exception("Exception occured in trying to run query")
-        return json.dumps(self.resultData)
+        return json.dumps(self.resultData,default=(lambda x:str(x))) #hack because date is not serializable
 
     def __init__(self):
         try:
